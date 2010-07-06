@@ -1,3 +1,6 @@
 I did some massage to original http://rubygems.org/gems/XMLCanonicalizer code:
 * no log4r dependency
 * no include REXML in global name space
+
+looks like XMLCanonicalizer code is taken from www.rubyforge.org/projects/wss4r
+so check out all the readmes there
