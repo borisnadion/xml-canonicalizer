@@ -5,7 +5,12 @@
 #include REXML
 #include Log4r
 
+require "rexml/document"
+require "base64"
+
 module XML
+  include REXML
+
   module Util
       
       class REXML::Instruction
@@ -128,8 +133,6 @@ module XML
         end
         
         def canonicalize_element(element, logging = true)
-			  logging=(true) if logging
-			  @logger.debug("Canonicalize element:\n " + element.to_s()) if @logger
           @inclusive_namespaces = add_inclusive_namespaces(@prefix_list, element, @inclusive_namespaces) if (@prefix_list)
           @preserve_document = element.document()
           tmp_parent = element.parent()
@@ -142,7 +145,6 @@ module XML
           ns = element.namespace(element.prefix())
           document.root().add_namespace(element.prefix(), ns)
           write_document_node(document)
-			 @logger.debug("Canonicalized result:\n " + @res.to_s()) if @logger
           @res
         end
         
@@ -398,18 +400,6 @@ module XML
           new_string
         end
       end
-		
-      def logging=(state)
-			if (state)
-			 @logger = Logger.new("xmlcanonicalizer")
-			 @logger.level = DEBUG
-			 @logger.trace = false
-			 p = PatternFormatter.new(:pattern => "[%l] %d :: %.100m %15t")
-			 @logger.add(FileOutputter.new("wss4r", {:filename => "xmlcanonicalizer.log", :formatter => BasicFormatter}))
-			else
-				@logger = nil
-			end
-		end
     end #Util
 end #XML
 
